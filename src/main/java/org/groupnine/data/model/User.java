@@ -2,10 +2,15 @@ package org.groupnine.data.model;
 import lombok.Getter;
 import lombok.Setter;
 import org.groupnine.security.PasswordHash;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Getter
 public class User {
-    private final int userId;
+    @BsonId
+    @BsonProperty("user_id")
+    private final String  userId;
     @Setter
     private String username;
     @Setter
@@ -13,12 +18,12 @@ public class User {
     @Setter
     private Profile profile;
 
-    public User(int userId, String username, String password) {
+    public User(String userId, String username, String password) {
         this.userId = userId;
         this.username = username;
         this.password = PasswordHash.hashPassword(password);
     }
-    public User(int userId, String username, String password, Profile profile) {
+    public User(String userId, String username, String password, Profile profile) {
         this(userId, username, password);
         this.profile = profile;
     }

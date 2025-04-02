@@ -13,4 +13,7 @@ public class Appointment {
     private String DoctorName;
     private String PatientName;
 
+
+
 }
+

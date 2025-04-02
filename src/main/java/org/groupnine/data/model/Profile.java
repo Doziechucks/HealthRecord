@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class Profile {
     private String firstname;
@@ -12,5 +14,6 @@ public class Profile {
     private String email;
     private Height height;
     private BodyType bodyType;
-
+    private Gender gender;
+    private LocalDate dateOfBirth;
 }
