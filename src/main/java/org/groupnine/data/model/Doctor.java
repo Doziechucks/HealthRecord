@@ -19,9 +19,7 @@ public class Doctor extends User {
     public Doctor(String userId, String username, String password, Profile profile) {
         super(userId, username, password, profile);
     }
-    public void addAppointment(Appointment appointment) {
-        appointments.add(appointment);
-    }
+
 
     public void cancelAppointment(Appointment appointment) {
         appointments.remove(appointment);

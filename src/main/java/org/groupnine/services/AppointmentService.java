@@ -14,8 +14,7 @@ public interface AppointmentService {
     Patient findPatientByProfile(Profile profile);
     Doctor findDoctorByProfile(Profile profile);
 
-    List<Appointment> findAppointmentsByPatientId(String patientId);
+    List<Appointment> findAppointmentsByUserId(String userId);
     Appointment bookAppointment(String patientId, String doctorId, LocalDate date);
     void cancelAppointment(String appointmentId);
-    List<Appointment> findUpcomingAppointments(String patientId);
 }

@@ -25,9 +25,6 @@ public class Patient extends User{
         super(userId, username, password, profile);
     }
 
-    public void bookAppointment(Appointment appointment) {
-        appointments.add(appointment);
-    }
     public void cancelAppointment(Appointment appointment) {
         appointments.remove(appointment);
     }
