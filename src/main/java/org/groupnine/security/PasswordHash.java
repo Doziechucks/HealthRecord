@@ -1,4 +1,4 @@
-package security;
+package org.groupnine.security;
 
 import org.mindrot.jbcrypt.BCrypt;
 

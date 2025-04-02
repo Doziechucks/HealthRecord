@@ -1,4 +1,4 @@
-package org.groupnine;
+package org.groupnine.data;
 
 public class Main {
     public static void main(String[] args) {
