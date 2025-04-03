@@ -6,8 +6,10 @@ import org.groupnine.data.model.Profile;
 import java.util.List;
 
 public interface PatientRepository {
-    public void save(Patient patient);
-    public Patient findPatientByUserId(String userId);
-    public List<Patient> findAllPatients();
-    public List<Patient> findPatientsByProfile(Profile profile);
+    Patient save(Patient patient);
+    Patient findPatientByUserId(String userId);
+    List<Patient> findAllPatients();
+    List<Patient> findPatientsByProfile(Profile profile);
+    boolean doctorExistsByUsername(String username);
+    boolean doctorExistsByEmail(String email);
 }

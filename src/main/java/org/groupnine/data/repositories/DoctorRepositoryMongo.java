@@ -1,16 +1,17 @@
 package org.groupnine.data.repositories;
 
 import org.groupnine.data.model.Doctor;
-import org.groupnine.data.model.Patient;
 import org.groupnine.data.model.Profile;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository("mongoDoctorRepository")
 public class DoctorRepositoryMongo implements DoctorRepository {
     private final MongoTemplate mongoTemplate;
 
@@ -19,8 +20,9 @@ public class DoctorRepositoryMongo implements DoctorRepository {
     }
 
     @Override
-    public void save(Doctor doctor) {
+    public Doctor save(Doctor doctor) {
         mongoTemplate.save(doctor);
+        return doctor;
     }
 
     @Override
@@ -36,28 +38,54 @@ public class DoctorRepositoryMongo implements DoctorRepository {
 
     @Override
     public List<Doctor> findDoctorByProfile(Profile profile) {
-        if (profile == null) {
-            return mongoTemplate.findAll(Doctor.class);
-        }
+        Query query = buildProfileQuery(profile);
+        return mongoTemplate.find(query, Doctor.class);
+    }
+
+    @Override
+    public boolean doctorExistsByUsername(String username) {
+        return mongoTemplate.exists(
+                Query.query(Criteria.where("username").is(username)),
+                Doctor.class
+        );
+    }
+
+    @Override
+    public boolean doctorExistsByEmail(String email) {
+        return mongoTemplate.exists(
+                Query.query(
+                        new Criteria().andOperator(
+                                Criteria.where("profile").exists(true),
+                                Criteria.where("profile.email").is(email)
+                        )
+                ),
+                Doctor.class
+        );
+    }
+    public static Query buildProfileQuery(Profile profile) {
         Query query = new Query();
-        List<Criteria> criteriaList = new ArrayList<>();
+        if (profile == null) {
+            return query;
+        }
+
+        List<Criteria> criteria = new ArrayList<>();
+
         Optional.ofNullable(profile.getFirstname())
-                .ifPresent(firstname -> criteriaList.add(Criteria.where("profile.firstname").is(firstname)));
+                .ifPresent(firstname -> criteria.add(Criteria.where("profile.firstname").is(firstname)));
         Optional.ofNullable(profile.getLastname())
-                .ifPresent(lastname -> criteriaList.add(Criteria.where("profile.lastname").is(lastname)));
+                .ifPresent(lastname -> criteria.add(Criteria.where("profile.lastname").is(lastname)));
         Optional.ofNullable(profile.getGender())
-                .ifPresent(gender -> criteriaList.add(Criteria.where("profile.gender").is(gender)));
+                .ifPresent(gender -> criteria.add(Criteria.where("profile.gender").is(gender)));
         Optional.ofNullable(profile.getEmail())
-                .ifPresent(email -> criteriaList.add(Criteria.where("profile.email").is(email)));
+                .ifPresent(email -> criteria.add(Criteria.where("profile.email").is(email)));
         Optional.ofNullable(profile.getBodyType())
-                .ifPresent(bodyType -> criteriaList.add(Criteria.where("profile.bodyType").is(bodyType)));
+                .ifPresent(bodyType -> criteria.add(Criteria.where("profile.bodyType").is(bodyType)));
         Optional.ofNullable(profile.getHeight())
-                .ifPresent(height -> criteriaList.add(Criteria.where("profile.height").is(height)));
-        if (criteriaList.isEmpty()) {
-            return mongoTemplate.findAll(Doctor.class);
+                .ifPresent(height -> criteria.add(Criteria.where("profile.height").is(height)));
+        if (!criteria.isEmpty()) {
+            query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[0])));
         }
-        else {
-            return mongoTemplate.find(query, Doctor.class);
-        }
+
+        return query;
     }
 }
