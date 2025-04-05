@@ -1,8 +1,10 @@
 package com.example.demo.services;
 
+
 import com.example.demo.controllers.dtos.doctor.RegisterDoctorRequest;
 import com.example.demo.controllers.dtos.doctor.RegisterDoctorResponse;
 import com.example.demo.data.model.Doctor;
+import com.example.demo.exception.EmailValidationException;
 import com.example.demo.repositories.DoctorRepositories;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +22,17 @@ public class DoctorServices {
     }
 
     public RegisterDoctorResponse registerUser(RegisterDoctorRequest request){
+        Doctor doctorEmail = repositories.findDoctorByEmail(request.getEmail());
         RegisterDoctorResponse response = new RegisterDoctorResponse();
-        validateDoctor(request);
-        Doctor doctor = setDoctorMapper(request);
-        repositories.save(doctor);
-        response.setMessage("Registered Doctor Successfully");
+        if(doctorEmail == null) {
+            validateDoctor(request);
+            Doctor doctor = setDoctorMapper(request);
+            repositories.save(doctor);
+            response.setMessage("Registered Doctor Successfully");
+            return response;
+        }
+        if(request.getEmail().equalsIgnoreCase(doctorEmail.getEmail())) throw new EmailValidationException("User Already exists !!!");
+        response.setMessage("An error occurred");
         return response;
     }
 }

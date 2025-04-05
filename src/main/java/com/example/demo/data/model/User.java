@@ -11,6 +11,9 @@ import lombok.Setter;
 public abstract class User extends Profile{
     private int userId;
     private String username;
+    private Object password;
+    @OneToOne
+    private Profile profile;
 
     public int getUserId() {
         return userId;
@@ -28,15 +31,15 @@ public abstract class User extends Profile{
         this.username = username;
     }
 
-    public String getPassword() {
+    public Object getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(Object password){
         this.password = password;
     }
 
-    public Profile getProfile() {
+    public Profile getProfile(){
         return profile;
     }
 
@@ -44,7 +47,4 @@ public abstract class User extends Profile{
         this.profile = profile;
     }
 
-    private String password;
-    @OneToOne
-    private Profile profile;
 }
