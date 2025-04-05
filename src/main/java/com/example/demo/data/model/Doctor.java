@@ -10,12 +10,15 @@ import java.util.List;
 
 @Getter
 @Setter
+@Entity
 public class Doctor extends User{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Optional, but recommended
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany
     private List<Patients> patients;
+    @OneToMany
     private List<Appointment> appointments;
 
   public Doctor(){
