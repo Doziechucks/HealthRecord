@@ -22,6 +22,7 @@ public class DoctorServices {
     }
 
     public RegisterDoctorResponse registerUser(RegisterDoctorRequest request){
+
         Doctor doctorEmail = repositories.findDoctorByEmail(request.getEmail());
         RegisterDoctorResponse response = new RegisterDoctorResponse();
         if(doctorEmail == null) {

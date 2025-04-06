@@ -15,6 +15,14 @@ public abstract class Profile {
     private Long id;
 
     private String firstname;
+    private String lastname;
+    private String email;
+    @Enumerated
+    private Height height;
+    @Enumerated
+    private BodyType bodyType;
+    @Enumerated
+    private Gender gender;
 
     public Long getId() {
         return id;
@@ -63,11 +71,12 @@ public abstract class Profile {
     public void setBodyType(BodyType bodyType) {
         this.bodyType = bodyType;
     }
+    public void setGender(Gender gender){
+        this.gender = gender;
 
-    private String lastname;
-    private String email;
-    private Height height;
-    @Enumerated(EnumType.STRING)
-    private BodyType bodyType;
+    }
+    public  Gender getGender(){
+        return gender;
+    }
 
 }
