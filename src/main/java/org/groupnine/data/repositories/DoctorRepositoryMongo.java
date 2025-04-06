@@ -62,6 +62,13 @@ public class DoctorRepositoryMongo implements DoctorRepository {
                 Doctor.class
         );
     }
+
+    @Override
+    public Doctor findDoctorByUsername(String username) {
+        Query query = Query.query(Criteria.where("username").is(username));
+        return mongoTemplate.findOne(query, Doctor.class);
+    }
+
     public static Query buildProfileQuery(Profile profile) {
         Query query = new Query();
         if (profile == null) {

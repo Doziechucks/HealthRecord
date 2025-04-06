@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class User {
     @BsonId
     @BsonProperty("user_id")
-    private final String  userId;
+    private String userId;
     @Setter
     @Indexed(unique = true)
     @BsonProperty("username")
@@ -21,13 +21,12 @@ public class User {
     @Setter
     private Profile profile;
 
-    public User(String userId, String username, String password) {
-        this.userId = userId;
+    public User(String username, String password) {
         this.username = username;
         this.password = PasswordHash.hashPassword(password);
     }
-    public User(String userId, String username, String password, Profile profile) {
-        this(userId, username, password);
+    public User(String username, String password, Profile profile) {
+        this(username, password);
         this.profile = profile;
     }
     public void changePassword(String password) {

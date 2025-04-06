@@ -13,4 +13,5 @@ public interface DoctorRepository {
     List<Doctor> findDoctorByProfile(Profile profile);
     boolean doctorExistsByUsername(String username);
     boolean doctorExistsByEmail(String email);
+    Doctor findDoctorByUsername(String username);
 }

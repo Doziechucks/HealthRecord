@@ -17,16 +17,19 @@ public class Patient extends User{
     @BsonProperty("appointments")
     private List<Appointment> appointments = new ArrayList<>();
 
-    public Patient(String userId, String username, String password) {
-        super(userId, username, password);
+    public Patient( String username, String password) {
+        super(username, password);
     }
 
-    public Patient(String userId, String username, String password, Profile profile) {
-        super(userId, username, password, profile);
+    public Patient(String username, String password, Profile profile) {
+        super(username, password, profile);
     }
 
     public void cancelAppointment(Appointment appointment) {
         appointments.remove(appointment);
+    }
+    public void addToMedicalRecords(String medicalRecord) {
+        medicalRecords.add(medicalRecord);
     }
 }
 

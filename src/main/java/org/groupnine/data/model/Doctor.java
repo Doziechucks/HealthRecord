@@ -14,12 +14,12 @@ public class Doctor extends User {
     @BsonProperty("appointments")
     private List<Appointment> appointments;
 
-    public Doctor(String userId, String username, String password) {
-        super(userId, username, password);
+    public Doctor(String username, String password) {
+        super(username, password);
     }
 
-    public Doctor(String userId, String username, String password, Profile profile) {
-        super(userId, username, password, profile);
+    public Doctor(String username, String password, Profile profile) {
+        super( username, password, profile);
     }
 
 

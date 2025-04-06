@@ -10,6 +10,7 @@ public interface PatientRepository {
     Patient findPatientByUserId(String userId);
     List<Patient> findAllPatients();
     List<Patient> findPatientsByProfile(Profile profile);
-    boolean doctorExistsByUsername(String username);
-    boolean doctorExistsByEmail(String email);
+    boolean patientExistsByUsername(String username);
+    boolean patientExistsByEmail(String email);
+    Patient findByUsername(String username);
 }

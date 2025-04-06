@@ -1,5 +1,8 @@
 package org.groupnine.services;
 
 public interface LoginServices {
-    boolean 
+
+
+    boolean doctorLogin(String username, String password);
+    boolean patientLogin(String username, String password);
 }
