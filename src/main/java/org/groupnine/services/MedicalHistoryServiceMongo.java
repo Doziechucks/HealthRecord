@@ -28,4 +28,18 @@ public class MedicalHistoryServiceMongo implements MedicalHistoryService {
         if(patient == null) throw new RuntimeException("Patient not found");
         else return patient.getMedicalRecords();
     }
+
+    @Override
+    public String getPatientMedicalHistory(String userId) {
+        StringBuilder history = new StringBuilder();
+        Patient patient = patientRepository.findPatientByUserId(userId);
+        if(patient == null) throw new RuntimeException("Patient not found");
+        else {
+            List<String> medicalHistory = patient.getMedicalRecords();
+            for(String medicalRecord : medicalHistory){
+                history.append(medicalRecord).append(".\n\n");
+            }
+        }
+        return history.toString();
+    }
 }

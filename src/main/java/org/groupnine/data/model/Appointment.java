@@ -10,10 +10,11 @@ import lombok.Setter;
 public class Appointment {
     private String appointmentId;
     private LocalDate dateAndTime;
-    private String PatientName;
-    private String DoctorName;
-    private String PatientId;
-    private String DoctorId;
+    private String patientName;
+    private String doctorName;
+    private String patientId;
+    private String doctorId;
+    private String appointmentPurpose;
 
 
 

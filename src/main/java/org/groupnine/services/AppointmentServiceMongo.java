@@ -53,7 +53,7 @@ public class AppointmentServiceMongo implements AppointmentService {
     }
 
     @Override
-    public Appointment bookAppointment(String patientId, String doctorId, LocalDate date) {
+    public Appointment bookAppointment(String patientId, String doctorId, LocalDate date, String appointmentPurpose) {
         Patient patient = findPatientByUserId(patientId);
         Doctor doctor = findDoctorByUserId(doctorId);
         if (doctor == null){
@@ -68,8 +68,10 @@ public class AppointmentServiceMongo implements AppointmentService {
                 patient.getUsername(),
                 doctor.getUsername(),
                 patient.getUserId(),
-                doctor.getUserId()
+                doctor.getUserId(),
+                appointmentPurpose
         );
+
         mongoTemplate.save(appointment);
 
         patient.getAppointments().add(appointment);
@@ -99,6 +101,66 @@ public class AppointmentServiceMongo implements AppointmentService {
         if (doctor != null) {
             doctor.getAppointments().removeIf(a -> a.getAppointmentId().equals(appointmentId));
         }
+    }
+
+    @Override
+    public String seePatientAppointments(String userId) {
+        StringBuilder appointmentIds = new StringBuilder();
+        Patient patient = patientRepository.findPatientByUserId(userId);
+        if (patient == null) {
+            throw new IllegalArgumentException("Patient not found");
+        }
+        else {
+            List<Appointment> appointments = patient.getAppointments();
+            for (Appointment appointment : appointments) {
+                appointmentIds.append(appointment.getAppointmentId()).append("\n");
+            }
+            return appointmentIds.toString();
+        }
+    }
+
+    @Override
+    public String seeDoctorAppointments(String userId) {
+        StringBuilder appointmentIds = new StringBuilder();
+        Doctor doctor = doctorRepository.findDoctorByUserId(userId);
+        if (doctor == null) {
+            throw new IllegalArgumentException("Doctor not found");
+        } else {
+            List<Appointment> appointments = doctor.getAppointments();
+            for (Appointment appointment : appointments) {
+                appointmentIds.append(appointment.getAppointmentId()).append("\n");
+            }
+            return appointmentIds.toString();
+        }
+
+    }
+
+    @Override
+    public String seeAppointmentDetails(String userId, String appointmentId) {
+        Doctor doctor = doctorRepository.findDoctorByUserId(userId);
+        if (doctor == null) {
+            Patient patient = patientRepository.findPatientByUserId(userId);
+            if (patient == null) {
+                throw new IllegalArgumentException("user not found");
+            }
+            else {
+                List<Appointment> appointments = patient.getAppointments();
+                for (Appointment appointment : appointments) {
+                    if (appointment.getAppointmentId().equals(appointmentId)) {
+                        return appointment.toString();
+                    }
+                }
+            }
+        }
+        else{
+            List<Appointment> appointments = doctor.getAppointments();
+            for (Appointment appointment : appointments) {
+                if (appointment.getAppointmentId().equals(appointmentId)) {
+                    return appointment.toString();
+                }
+            }
+        }
+        return "no appointment has this appointment ID";
     }
 
 }
