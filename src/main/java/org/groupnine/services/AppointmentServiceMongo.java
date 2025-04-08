@@ -25,24 +25,13 @@ public class AppointmentServiceMongo implements AppointmentService {
     }
 
 
-    @Override
-    public Patient findPatientByUserId(String userId) {
+    private Patient findPatientByUserId(String userId) {
         return patientRepository.findPatientByUserId(userId);
     }
 
-    @Override
-    public Doctor findDoctorByUserId(String userId) {
+
+    private Doctor findDoctorByUserId(String userId) {
         return doctorRepository.findDoctorByUserId(userId);
-    }
-
-    @Override
-    public Patient findPatientByProfile(Profile profile) {
-        return (Patient) patientRepository.findPatientsByProfile(profile);
-    }
-
-    @Override
-    public Doctor findDoctorByProfile(Profile profile) {
-        return (Doctor) doctorRepository.findDoctorByProfile(profile);
     }
 
     @Override

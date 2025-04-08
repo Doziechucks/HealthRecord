@@ -9,10 +9,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface AppointmentService {
-    Patient findPatientByUserId(String userId);
-    Doctor findDoctorByUserId(String userId);
-    Patient findPatientByProfile(Profile profile);
-    Doctor findDoctorByProfile(Profile profile);
 
 
     List<Appointment> findAppointmentsByUserId(String userId);

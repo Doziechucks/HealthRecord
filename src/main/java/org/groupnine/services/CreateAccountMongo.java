@@ -4,6 +4,7 @@ import org.groupnine.data.model.Doctor;
 import org.groupnine.data.model.Patient;
 import org.groupnine.data.repositories.DoctorRepositoryMongo;
 import org.groupnine.data.repositories.PatientRepositoryMongodb;
+import org.jetbrains.annotations.NotNull;
 
 public class CreateAccountMongo implements CreateAccount {
     private final PatientRepositoryMongodb patientRepository;
@@ -15,7 +16,10 @@ public class CreateAccountMongo implements CreateAccount {
     }
 
     @Override
-    public String patientCreateAccount(String username, String password) {
+    public String patientCreateAccount(@NotNull String username, String password) {
+        if(username.isEmpty() || password.isEmpty() || password.contains(" ") || username.contains(" ")) {
+            throw new IllegalArgumentException("Invalid username or password");
+        }
         if(patientRepository.findByUsername(username) == null) {
             Patient patient = new Patient(username, password);
             patientRepository.save(patient);
@@ -26,6 +30,8 @@ public class CreateAccountMongo implements CreateAccount {
 
     @Override
     public String doctorCreateAccount(String username, String password) {
+        if(username.isEmpty() || password.isEmpty() || password.contains(" ") || username.contains(" ")) {
+            throw new IllegalArgumentException("Invalid username or password");}
         if(doctorRepository.findDoctorByUsername(username) == null) {
             Doctor doctor = new Doctor(username, password);
             doctorRepository.save(doctor);
@@ -33,6 +39,5 @@ public class CreateAccountMongo implements CreateAccount {
         }
         else throw new IllegalArgumentException("this username already exists");
     }
-
 
 }
