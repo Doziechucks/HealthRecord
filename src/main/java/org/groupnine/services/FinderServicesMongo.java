@@ -6,6 +6,8 @@ import org.groupnine.data.repositories.PatientRepositoryMongodb;
 import org.groupnine.dto.UpdateProfileDto;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FinderServicesMongo implements FindersServices{
     private final PatientRepositoryMongodb patientRepository;
@@ -17,15 +19,21 @@ public class FinderServicesMongo implements FindersServices{
     }
 
     @Override
-    public Patient findPatientByUserId(String userId) {
-        return patientRepository.findPatientByUserId(userId);
+    public String findPatientByUserId(String userId) {
+        Patient patient = patientRepository.findPatientByUserId(userId);
+        return patient != null ? patient.getUsername() : null;
     }
 
+
     @Override
-    public Patient findPatientByProfile(String firstname, String lastname, String email, Height height, BodyType bodyType, Gender gender, LocalDate dateOfBirth) {
+    public List<String> findPatientByProfile(String firstname, String lastname, Height height, BodyType bodyType, Gender gender, LocalDate dateOfBirth) {
         Profile profile = new Profile();
         profileBuilder(firstname, lastname, height, bodyType, gender, dateOfBirth, profile);
-        return (Patient) patientRepository.findPatientsByProfile(profile);
+        List<Patient> patients = patientRepository.findPatientsByProfile(profile);
+        if (patients == null) return null;
+        return patients.stream()
+                .map(Patient::getUserId)
+                .collect(Collectors.toList());
     }
 
     static void profileBuilder(String firstname, String lastname, Height height, BodyType bodyType, Gender gender, LocalDate dateOfBirth, Profile profile) {
@@ -39,21 +47,27 @@ public class FinderServicesMongo implements FindersServices{
 
 
     @Override
-    public Patient findPatientByUsername(String username) {
-        return patientRepository.findByUsername(username);
+    public String findPatientByUsername(String username) {
+        Patient patient = patientRepository.findByUsername(username);
+        return patient != null ? patient.getUserId() : null;
     }
 
     @Override
-    public Doctor findDoctorByUserId(String userId) {
-        return doctorRepository.findDoctorByUserId(userId);
+    public String findDoctorByUserId(String userId) {
+        Doctor doctor = doctorRepository.findDoctorByUserId(userId);
+        return doctor != null ? doctor.getUsername() : null;
     }
 
+
     @Override
-    public Doctor findDoctorByProfile(String firstname, String lastname, String email, Height height, BodyType bodyType, Gender gender, LocalDate dateOfBirth) {
+    public List<String> findDoctorByProfile(String firstname, String lastname, Height height, BodyType bodyType, Gender gender, LocalDate dateOfBirth) {
         Profile profile = new Profile();
         profileBuilder(firstname, lastname, height, bodyType, gender, dateOfBirth, profile);
-        return (Doctor) doctorRepository.findDoctorByProfile(profile);
-
+        List<Doctor> doctors = doctorRepository.findDoctorByProfile(profile);
+        if (doctors == null) return null;
+        return doctors.stream()
+                .map(Doctor::getUserId)
+                .collect(Collectors.toList());
     }
     public static void updateProfileFromDto(UpdateProfileDto dto, Profile profile) {
         if (dto.getFirstName() != null) profile.setFirstname(dto.getFirstName());
@@ -66,7 +80,8 @@ public class FinderServicesMongo implements FindersServices{
 
 
     @Override
-    public Doctor findDoctorByUsername(String username) {
-        return doctorRepository.findDoctorByUsername(username);
+    public String findDoctorByUsername(String username) {
+        Doctor doctor = doctorRepository.findDoctorByUsername(username);
+        return doctor != null ? doctor.getUserId() : null;
     }
 }

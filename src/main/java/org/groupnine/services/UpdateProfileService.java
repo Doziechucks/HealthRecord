@@ -9,8 +9,6 @@ import org.groupnine.dto.UpdateProfileDto;
 import java.time.LocalDate;
 
 public interface UpdateProfileService {
-    void updateDoctorProfile(String userId, String firstname, String lastName, Height height, BodyType bodyType, Gender gender, LocalDate dateOfBirth);
-    void updateDoctorProfile(String userId, UpdateProfileDto updateProfileDto)
-
+    void updateDoctorProfile(String userId, UpdateProfileDto updateProfileDto);
     void updatePatientProfile(String userId, UpdateProfileDto updateProfileDto);
 }

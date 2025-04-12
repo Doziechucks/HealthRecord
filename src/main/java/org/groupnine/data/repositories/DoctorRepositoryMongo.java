@@ -42,17 +42,10 @@ public class DoctorRepositoryMongo implements DoctorRepository {
         return mongoTemplate.find(query, Doctor.class);
     }
 
-    @Override
-    public boolean doctorExistsByUsername(String username) {
-        return mongoTemplate.exists(
-                Query.query(Criteria.where("username").is(username)),
-                Doctor.class
-        );
-    }
 
     @Override
-    public boolean doctorExistsByEmail(String email) {
-        return mongoTemplate.exists(
+    public Doctor findDoctorByEmail(String email) {
+        return mongoTemplate.findOne(
                 Query.query(
                         new Criteria().andOperator(
                                 Criteria.where("profile").exists(true),

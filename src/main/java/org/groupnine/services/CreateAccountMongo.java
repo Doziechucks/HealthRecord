@@ -24,7 +24,7 @@ public class CreateAccountMongo implements CreateAccount {
             @NotNull String firstName) {  // Added firstName parameter
 
         validateInput(username, password, email, firstName);
-        checkExistingCredentials(username, email);
+        checkExistingPatientCredentials(username, email);
 
         Patient newPatient = new Patient(username, password, email);
         patientRepository.save(newPatient);
@@ -39,10 +39,20 @@ public class CreateAccountMongo implements CreateAccount {
     @NotNull String firstName) {
 
         validateInput(username, password, email, firstName);
-        checkExistingCredentials(username, email);
+        checkExistingDoctorCredentials(username, email);
         Doctor newDoctor = new Doctor(username, password);
         doctorRepository.save(newDoctor);
         return new BuilderDto(newDoctor.getUsername(), newDoctor.getUserId(), "doctor");
+    }
+
+    private void checkExistingDoctorCredentials(@NotNull String username, @NotNull String email) {
+        if (doctorRepository.findDoctorByUsername(username) != null) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+
+        if (doctorRepository.findDoctorByUsername(email) != null) {
+            throw new IllegalArgumentException("Email already registered");
+        }
     }
 
 
@@ -61,12 +71,12 @@ public class CreateAccountMongo implements CreateAccount {
 
     }
 
-    private void checkExistingCredentials(String username, String email) {
+    private void checkExistingPatientCredentials(String username, String email) {
         if (patientRepository.findByUsername(username) != null) {
             throw new IllegalArgumentException("Username already exists");
         }
 
-        if (patientRepository.patientExistsByEmail(email)) {
+        if (patientRepository.findPatientByEmail(email) != null) {
             throw new IllegalArgumentException("Email already registered");
         }
     }

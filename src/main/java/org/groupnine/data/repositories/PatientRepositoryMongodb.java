@@ -43,16 +43,8 @@ public class PatientRepositoryMongodb implements PatientRepository {
     }
 
     @Override
-    public boolean patientExistsByUsername(String username) {
-        return mongoTemplate.exists(
-                Query.query(Criteria.where("username").is(username)),
-                Patient.class
-        );
-    }
-
-    @Override
-    public boolean patientExistsByEmail(String email) {
-        return mongoTemplate.exists(
+    public Patient findPatientByEmail(String email) {
+        return mongoTemplate.findOne(
                 Query.query(
                         new Criteria().andOperator(
                                 Criteria.where("profile").exists(true),
@@ -61,7 +53,6 @@ public class PatientRepositoryMongodb implements PatientRepository {
                 ),
                 Patient.class
         );
-
     }
 
     @Override

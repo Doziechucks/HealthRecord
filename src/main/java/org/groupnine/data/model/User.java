@@ -21,7 +21,6 @@ public class User {
     @Setter
     private Profile profile;
     @Setter
-    @Indexed(unique = true)
     private String email;
 
     public User(String username, String password, String email) {
