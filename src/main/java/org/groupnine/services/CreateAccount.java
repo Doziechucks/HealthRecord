@@ -1,10 +1,9 @@
 package org.groupnine.services;
 
-import org.groupnine.data.model.Doctor;
-import org.groupnine.data.model.Patient;
+import org.groupnine.dto.BuilderDto;
 
 public interface CreateAccount {
-    String patientCreateAccount(String username, String password);
-    String doctorCreateAccount(String username, String password);
+    BuilderDto patientCreateAccount(String username, String password, String email, String userType);
+    BuilderDto doctorCreateAccount(String username, String password, String email, String userType);
 
 }

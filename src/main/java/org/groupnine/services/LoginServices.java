@@ -1,8 +1,10 @@
 package org.groupnine.services;
 
+import org.groupnine.dto.BuilderDto;
+
 public interface LoginServices {
 
 
-    boolean doctorLogin(String username, String password);
-    boolean patientLogin(String username, String password);
+    BuilderDto doctorLogin(String username, String password);
+    BuilderDto patientLogin(String username, String password);
 }

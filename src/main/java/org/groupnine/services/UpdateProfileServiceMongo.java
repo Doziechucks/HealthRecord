@@ -3,9 +3,7 @@ package org.groupnine.services;
 import org.groupnine.data.model.*;
 import org.groupnine.data.repositories.DoctorRepositoryMongo;
 import org.groupnine.data.repositories.PatientRepositoryMongodb;
-import org.springframework.security.access.method.P;
-
-import java.time.LocalDate;
+import org.groupnine.dto.UpdateProfileDto;
 
 public class UpdateProfileServiceMongo implements UpdateProfileService {
     private final PatientRepositoryMongodb patientRepository;
@@ -17,7 +15,7 @@ public class UpdateProfileServiceMongo implements UpdateProfileService {
     }
 
     @Override
-    public void updateDoctorProfile(String userId, String firstname, String lastname, String email, Height height, BodyType bodyType, Gender gender, LocalDate dateOfBirth) {
+    public void updateDoctorProfile(String userId, UpdateProfileDto updateProfileDto) {
         Patient patient = patientRepository.findPatientByUserId(userId);
         if(patient == null) throw new IllegalArgumentException("Patient not found with id: " + userId);
         else{
@@ -25,15 +23,15 @@ public class UpdateProfileServiceMongo implements UpdateProfileService {
         if (profile == null) {
             profile = new Profile();
             patient.setProfile(profile);
-        }
-            FinderServicesMongo.profileBuilder(firstname, lastname, email, height, bodyType, gender, dateOfBirth, profile);
 
+        }
+            FinderServicesMongo.updateProfileFromDto(updateProfileDto, profile);
             patientRepository.save(patient);
         }
     }
 
     @Override
-    public void updatePatientProfile(String userId, String firstName, String lastName, String email, Height height, BodyType bodyType, Gender gender, LocalDate dateOfBirth) {
+    public void updatePatientProfile(String userId, UpdateProfileDto updateProfileDto) {
         Doctor doctor = doctorRepository.findDoctorByUserId(userId);
         if(doctor == null) throw new IllegalArgumentException("Doctor not found with id: " + userId);
         else{
@@ -42,8 +40,7 @@ public class UpdateProfileServiceMongo implements UpdateProfileService {
                 profile = new Profile();
                 doctor.setProfile(profile);
             }
-            FinderServicesMongo.profileBuilder(firstName, lastName, email, height, bodyType, gender, dateOfBirth, profile);
-
+            FinderServicesMongo.updateProfileFromDto(updateProfileDto, profile);
             doctorRepository.save(doctor);
         }
     }

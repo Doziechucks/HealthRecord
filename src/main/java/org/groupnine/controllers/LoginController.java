@@ -1,5 +1,6 @@
 package org.groupnine.controllers;
 
+import org.groupnine.dto.BuilderDto;
 import org.groupnine.dto.LoginRequest;
 import org.groupnine.services.LoginServices;
 import org.springframework.http.HttpStatus;
@@ -19,19 +20,29 @@ public class LoginController {
         this.loginServices = loginServices;
     }
     @PostMapping("/doctor/login")
-    public ResponseEntity<String> doctorLogin(@RequestBody LoginRequest request) {
-        boolean isValid = loginServices.doctorLogin(request.getUsername(), request.getPassword());
-        if (isValid) {
-            return ResponseEntity.ok("You have been logged in!");
+    public ResponseEntity<?> doctorLogin(@RequestBody LoginRequest request) {
+        try {
+            BuilderDto doctorDto = loginServices.doctorLogin(
+                    request.getUsername(),
+                    request.getPassword()
+            );
+            return ResponseEntity.ok(doctorDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(e.getMessage());
         }
-        else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
     @PostMapping("/patient/login")
-    public ResponseEntity<String> patientLogin(@RequestBody LoginRequest request) {
-        boolean isValid = loginServices.patientLogin(request.getUsername(), request.getPassword());
-        if (isValid) {
-            return ResponseEntity.ok("You have been logged in!");
+    public ResponseEntity<?> patientLogin(@RequestBody LoginRequest request) {
+        try {
+            BuilderDto patientDto = loginServices.patientLogin(
+                    request.getUsername(),
+                    request.getPassword()
+            );
+            return ResponseEntity.ok(patientDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(e.getMessage());
         }
-        else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
 }

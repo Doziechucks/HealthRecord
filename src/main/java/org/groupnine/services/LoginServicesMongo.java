@@ -1,8 +1,10 @@
 package org.groupnine.services;
 
+import org.groupnine.data.model.Doctor;
 import org.groupnine.data.model.Patient;
 import org.groupnine.data.repositories.DoctorRepositoryMongo;
 import org.groupnine.data.repositories.PatientRepositoryMongodb;
+import org.groupnine.dto.BuilderDto;
 import org.groupnine.security.PasswordHash;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -19,21 +21,20 @@ public class LoginServicesMongo implements LoginServices {
 
 
     @Override
-    public boolean doctorLogin(String username, String password) {
-        if(patientRepository.patientExistsByUsername(username)){
-            Patient patient = patientRepository.findByUsername(username);
-            return PasswordHash.verifyPassword(password, patient.getPassword());
+    public BuilderDto doctorLogin(String username, String password) {
+        Doctor doctor = doctorRepository.findDoctorByUsername(username);
+        if (doctor != null && PasswordHash.verifyPassword(password, doctor.getPassword())) {
+            return new BuilderDto(username, doctor.getUserId(), "doctor");
         }
-        throw new IllegalArgumentException("Invalid username");
-
+        throw new IllegalArgumentException("Invalid credentials");
     }
 
     @Override
-    public boolean patientLogin(String username, String password) {
-        if(doctorRepository.doctorExistsByUsername(username)){
-            Patient patient = patientRepository.findByUsername(username);
-            return PasswordHash.verifyPassword(password, patient.getPassword());
+    public BuilderDto patientLogin(String username, String password) {
+        Patient patient = patientRepository.findByUsername(username);
+        if (patient != null && PasswordHash.verifyPassword(password, patient.getPassword())) {
+            return new BuilderDto(username, patient.getUserId(), "patient");
         }
-        throw new IllegalArgumentException("Invalid username");
+        throw new IllegalArgumentException("Invalid credentials");
     }
 }

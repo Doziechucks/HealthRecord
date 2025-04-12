@@ -14,20 +14,15 @@ public class Patient extends User{
     @BsonProperty("medical_records")
     private List<String> medicalRecords = new ArrayList<>();
 
-    @BsonProperty("appointments")
-    private List<Appointment> appointments = new ArrayList<>();
 
-    public Patient( String username, String password) {
-        super(username, password);
+    public Patient( String username, String password, String email) {
+        super(username, password, email);
     }
 
-    public Patient(String username, String password, Profile profile) {
-        super(username, password, profile);
+    public Patient(String username, String password, String email, Profile profile) {
+        super(username, password, email, profile);
     }
 
-    public void cancelAppointment(Appointment appointment) {
-        appointments.remove(appointment);
-    }
     public void addToMedicalRecords(String medicalRecord) {
         medicalRecords.add(medicalRecord);
     }

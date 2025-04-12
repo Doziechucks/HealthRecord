@@ -83,8 +83,6 @@ public class DoctorRepositoryMongo implements DoctorRepository {
                 .ifPresent(lastname -> criteria.add(Criteria.where("profile.lastname").is(lastname)));
         Optional.ofNullable(profile.getGender())
                 .ifPresent(gender -> criteria.add(Criteria.where("profile.gender").is(gender)));
-        Optional.ofNullable(profile.getEmail())
-                .ifPresent(email -> criteria.add(Criteria.where("profile.email").is(email)));
         Optional.ofNullable(profile.getBodyType())
                 .ifPresent(bodyType -> criteria.add(Criteria.where("profile.bodyType").is(bodyType)));
         Optional.ofNullable(profile.getHeight())

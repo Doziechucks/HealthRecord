@@ -11,7 +11,6 @@ import java.time.LocalDate;
 public class Profile {
     private String firstname;
     private String lastname;
-    private String email;
     private Height height;
     private BodyType bodyType;
     private Gender gender;

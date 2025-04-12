@@ -9,12 +9,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface AppointmentService {
-
-
-    List<Appointment> findAppointmentsByUserId(String userId);
-    Appointment bookAppointment(String patientId, String doctorId, LocalDate date, String appointmentPurpose);
-    void cancelAppointment(String appointmentId);
-    String seePatientAppointments(String userId);
-    String seeDoctorAppointments(String userId);
-    String seeAppointmentDetails(String userId, String appointmentId);
+    String bookAppointment(String patientId, String doctorId, LocalDate date, String appointmentPurpose);
+    String cancelAppointment(String appointmentId);
+    String seeUserAppointments(String userId);
+    Appointment seeAppointmentDetails(String appointmentId);
 }

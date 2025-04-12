@@ -1,6 +1,7 @@
 package org.groupnine.controllers;
 
-import org.groupnine.dto.RegisterationRequest;
+import org.groupnine.dto.BuilderDto;
+import org.groupnine.dto.RegistrationRequest;
 import org.groupnine.services.CreateAccount;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +20,28 @@ public class RegistrationController {
     }
 
     @PostMapping("/patient/register")
-    public ResponseEntity<String> registerPatient(@RequestBody RegisterationRequest request) {
+    public ResponseEntity<String> registerPatient(@RequestBody RegistrationRequest request) {
         try {
-            String userId = createAccountService.patientCreateAccount(
+            BuilderDto patient = createAccountService.patientCreateAccount(
                     request.getUsername(),
-                    request.getPassword());
-            return ResponseEntity.ok("Patient created with ID: " + userId);
+                    request.getPassword(),
+                    request.getEmail(),
+                    "patient");
+            return ResponseEntity.ok("Patient created with ID: " + patient.getUserId());
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
         }
     }
     @PostMapping("/doctor/register")
-    public ResponseEntity<String> registerDoctor(@RequestBody RegisterationRequest request) {
+    public ResponseEntity<String> registerDoctor(@RequestBody RegistrationRequest request) {
         try {
-            String userId = createAccountService.doctorCreateAccount(
+            BuilderDto doctor = createAccountService.doctorCreateAccount(
                     request.getUsername(),
-                    request.getPassword()
+                    request.getPassword(),
+                    request.getEmail(),
+                    "doctor"
             );
-            return ResponseEntity.ok("Doctor created with ID: " + userId);
+            return ResponseEntity.ok("Doctor created with ID: " + doctor.getUserId());
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
         }

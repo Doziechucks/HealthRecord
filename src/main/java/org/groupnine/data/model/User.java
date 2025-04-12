@@ -20,13 +20,17 @@ public class User {
     private String password;
     @Setter
     private Profile profile;
+    @Setter
+    @Indexed(unique = true)
+    private String email;
 
-    public User(String username, String password) {
+    public User(String username, String password, String email) {
         this.username = username;
         this.password = PasswordHash.hashPassword(password);
+        this.email = email;
     }
-    public User(String username, String password, Profile profile) {
-        this(username, password);
+    public User(String username, String password, String email, Profile profile) {
+        this(username, password, email);
         this.profile = profile;
     }
     public void changePassword(String password) {
